@@ -1,9 +1,8 @@
 import re
-usr_details = open("C:\\Users\\ibrah\\PycharmProjects\\User_Details.txt", "r")
-def register():
-    # User_details
-    #usr_details = open("C:\\Users\\ibrah\\PycharmProjects\\User_Details.txt", "r")
 
+def register():
+    usr_details = open("C:\\Users\\ibrah\\PycharmProjects\\User_Details.txt", "r")
+    # with open("C:/Users/ibrah/PycharmProjects/FileHandlingTestFile.txt") as usr_details:
 
     # mail id
     email = input("Enter the new mail id : ")
@@ -23,9 +22,9 @@ def register():
         if l != []:
             # print(l)
             print("Email Id is valid !, Please enter password")
-
     else:
         print("Invalid")
+
     # password
     pattern = re.compile(r'')
     while True:
@@ -53,20 +52,28 @@ def register():
     for i in usr_details:
         a, b = i.split(",")
         b = b.strip()
-        #c = a, b
+        # c = a, b
         usrnme.append(a)
         pswrd.append(b)
         data = dict(zip(usrnme, pswrd))
-        #print(data)
+        # print(data)
         if email in usrnme:
             print("Email already exists, Please Login")
-            login()
+            chooseOption()
         else:
             usr_details = open("C:\\Users\\ibrah\\PycharmProjects\\User_Details.txt", "a")
+            #with open("C:/Users/ibrah/PycharmProjects/FileHandlingTestFile_3.txt", "a") as usr_details:
             usr_details.write(email + ', ' + password + '\n')
+            usr_details.close()
             print("Registration Success!!")
+            #print("login")
+            #chooseOption()
+        break
+        usr_details.close()
+
 
 def login():
+    usr_details = open("C:\\Users\\ibrah\\PycharmProjects\\User_Details.txt", "r")
     email = input("Enter the mail id : ")
 
     usrnme = []
@@ -74,29 +81,45 @@ def login():
     for i in usr_details:
         a, b = i.split(",")
         b = b.strip()
-        #c = a, b
+        # c = a, b
         usrnme.append(a)
         pswrd.append(b)
         data = dict(zip(usrnme, pswrd))
-        #print(data)
+        # print(data)
         if email in usrnme:
             password = input("Enter the password : ")
             if password in pswrd:
                 print("Logged in successfully")
+                print("Hi!,", email)
                 break
+            elif password not in pswrd:
+                print("Wrong password!")
+                retpass = input("Try again | Change password | Forget password ? ")
+                retpass = retpass.upper()
+                if retpass == "TRY AGAIN":
+                    login()
+                if retpass == "FORGET PASSWORD":
+                    email = input("Enter the mail id : ")
+                    print(data.get([usrnme]))
+                if retpass == "CHANGE PASSWORD":
+                    #print("Enter the new password")
+                    newpass = input("Enter the new password")
+                    data[pswrd]=newpass
+
             else:
                 print("Enter the correct password")
-
-
+    if email not in usrnme:
+        print("User not found, Please register!!")
+        register()
 
 def chooseOption():
+    print('Hi! Please select an option')
     option = input("Login | Register ")
     option = option.upper()
     if option == "LOGIN":
         login()
-
-    if option == "REGISTER":
+    elif option == "REGISTER":
         register()
-
-
+    else:
+        print("Please enter a valid input")
 chooseOption()
